@@ -8,31 +8,107 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 <body>
-    
-    <div>
+    <div class="container is-fluid">
         <h1>Base form</h1>
-        <form>
+        <form id="base-data">
             <div class="field">
                 <label class="label">Fult navn</label>
                 <div class="control">
-                    <input type="text" placeholder="Fult navn">
+                    <input class="input" type="text" placeholder="Fult navn">
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
-                    <input type="email" placeholder="Email">
+                    <input class="input" type="email" placeholder="Email">
                 </div>
             </div>
         </form>
     </div>
+      </div>
+    <div>
 
+        
+      
+        <div id="participant-container">
 
+        </div>
+        <button id="add-participant">Legg til ny deltaker</button>
+
+        <button id="send-form">Send</button>
+
+       
 </body>
 </html>
 
 
 <script>
 
+(() => {
+    console.log("Booting container")
+    const container = document.getElementById("participant-container")
+    const template = document.getElementById("participant-template")
+
+    container.appendChild(template) // First load add one entry of the template
+
+    document.getElementById("add-participant").addEventListener("click", function(){
+        console.log("Adding participant")
+        container.appendChild(template)
+    })
+    document.getElementById("remove-participant").addEventListener("click", function(){
+        container.removeChild(this.parentElement)
+    })
+
+    document.getElementById("send-form").addEventListener("click", function(){
+        const baseForm = document.getElementById("base-form")
+        const baseName = baseForm.querySelector("input[type=text]")
+        const baseEmail = baseForm.querySelector("input[type=email]")
+
+        let participantArray = []
+        const participantForms = document.querySelectorAll("#particicipant-container form")
+
+        participantForms.forEach(function(form){
+            const name = form.querySelector("input[type=text]").value
+            const email = form.querySelector("input[type=email]]").value
+            if(name && email)
+            {
+                participantArray.push({name: name, email: email})
+            }
+        })
+
+        // Send til api
+        fetch("/api", {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify({
+                name: baseName,
+                email: baseEmail,
+                participants: participantArray
+        })
+        })
+      
+    })
+})();
+
+
+</script>
+
+<script type="text/html" id="participant-template">
+     <form>
+                <div class="field">
+                    <label class="label">Fult navn</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Fult navn">
+                    </div>
+                </div>
+    
+                <div class="field is-horizontal">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" placeholder="Email">
+                    </div>
+                </div>
+                <button class="remove-participant">Fjern</button>
+            </form>
 </script>
