@@ -70,10 +70,10 @@
     const container = document.getElementById("participant-container")
     const template = document.getElementById("participant-template")
 
-    container.appendChild(template) // First load add one entry of the template
+    container.appendChild(template.innerHTML) // First load add one entry of the template
 
     document.getElementById("add-participant").addEventListener("click", function(){
-        container.appendChild(template)
+        container.appendChild(template.innerHTML)
     })
     document.getElementById("participant-container").addEventListener("click", function(){
         if(event.target && event.target.matches('.remove-participant')){
