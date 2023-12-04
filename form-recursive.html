@@ -43,6 +43,7 @@
 </html>
 
 <script type="text/html" id="participant-template">
+    <div>
     <form>
                <div class="field">
                    <label class="label">Fult navn</label>
@@ -59,6 +60,7 @@
                </div>
                <button class="remove-participant">Fjern</button>
            </form>
+        </div>
 </script>
 
 <script>
@@ -71,11 +73,12 @@
     container.appendChild(template) // First load add one entry of the template
 
     document.getElementById("add-participant").addEventListener("click", function(){
-        console.log("Adding participant")
         container.appendChild(template)
     })
-    document.getElementById("remove-participant").addEventListener("click", function(){
-        container.removeChild(this.parentElement)
+    document.getElementById("participant-container").addEventListener("click", function(){
+        if(event.target && event.target.matches('.remove-participant')){
+            container.removeChild(event.target.closest('div'))
+        }
     })
 
     document.getElementById("send-form").addEventListener("click", function(){
